@@ -1,27 +1,22 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
 
-export class Hello extends React.Component {
-
-    state = {
-        counter: 0
+const stateToProps = (state, props) => {
+    return {
+        counter: state.counter
     };
+}
 
-    componentDidMount() {
-        this.interval = setInterval(() => {
-            this.setState({
-                counter: this.state.counter + 1
-            })
-        }, 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
-    render() {
+export const Hello = connect(stateToProps)(
+    ({name, counter, dispatch}) => {
         return (
-            <h1>Hello, {this.props.name} &times; {this.state.counter}!</h1>
+            <React.Fragment>
+                <h1>Hello, {name} &times; {counter}!</h1>
+
+                <button onClick={() => dispatch({type: 'TOGGLE_COUNTER'})}>
+                    Toggle
+                </button>
+            </React.Fragment>
         );
     }
-
-}
+);

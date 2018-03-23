@@ -22,6 +22,10 @@ export class Infinite extends React.Component {
         document.removeEventListener('scroll', this.onScroll);
     }
 
+    componentDidUpdate() {
+        this.onScroll();
+    }
+
     onScroll() {
         if (!this.container || this.state.loading) {
             return;
@@ -39,7 +43,6 @@ export class Infinite extends React.Component {
     async nextPage() {
         this.setState({loading: true});
 
-        console.log('Moaar');
         try {
             await this.props.fetchNext();
         } catch(err) {

@@ -1,79 +1,82 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
 
 import {Cards} from './Cards';
+import {fetchNext} from '../actions/fetchNext';
 
-export class Feed extends React.Component {
+const stateToProps = (state) => ({
+    tag: state.tags.current,
+    cards: state.feed.cards,
+    error: state.feed.error
+});
 
-    state = {
-        loading: true,
-        cards: []
-    };
+export const Feed = connect(stateToProps) (
+    class Feed extends React.Component {
 
-    constructor(props) {
-        super(props);
+        state = {
+            loading: true
+        };
 
-        this.fetchNext = this.fetchNext.bind(this);
-    }
+        constructor(props) {
+            super(props);
 
-    componentDidMount() {
-        this.fetchData()
-            .catch((error) => {
-                this.setState({
-                    loading: false,
-                    error
+            this.fetch = this.fetch.bind(this);
+        }
+
+        componentDidMount() {
+            this.fetch()
+                .then(() => {
+                    this.setState({loading: false});
+                })
+                .catch((error) => {
+                    this.setState({
+                        loading: false,
+                        error
+                    });
                 });
-            });
-    }
-
-    fetchData() {
-        return this.fetch();
-    }
-
-    fetchNext() {
-        if (this.next) {
-            return this.fetch(this.next);
         }
-    }
 
-    async fetch(query = {}) {
-        let params = Object.keys(query)
-            .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
-            .join('&');
+        componentWillReceiveProps(props) {
+            if (props.tag !== this.props.tag) {
+                this.props.dispatch({
+                    type: 'FEED_RESET'
+                });
+            }
+        }
 
-        let response = await fetch('/collections/api/cards/channels/gory/?' + params, {credentials: 'same-origin'});
-        let json = await response.json();
+        fetch() {
+            return this.props.dispatch(fetchNext({
+                tag: this.props.tag
+            }));
+        }
 
-        this.next = json.next;
+        render() {
+            let {error, cards} = this.props,
+                loading = this.state.loading;
 
-        this.setState({
-            cards: this.state.cards.concat(json.results),
-            loading: false
-        });
-    }
+            if (loading) {
+                return (
+                    <div className="screen">
+                        <div className="spinner"/>
+                    </div>
+                );
+            }
 
-    render() {
-        if (this.state.loading) {
+            if (error) {
+                return (
+                    <div className="screen">
+                        <h1>ERROR: {error.message}</h1>
+                    </div>
+                );
+            }
+
             return (
-                <div className="screen">
-                    <div className="spinner"/>
-                </div>
+                <Cards
+                    cards={cards}
+                    fetchNext={this.fetch}
+                />
             );
         }
 
-        if (this.state.error) {
-            return (
-                <div className="screen">
-                    <h1>ERROR: {this.state.error.message}</h1>
-                </div>
-            );
-        }
-
-        return (
-            <Cards
-                cards={this.state.cards}
-                fetchNext={this.fetchNext}
-            />
-        );
     }
-
-}
+);

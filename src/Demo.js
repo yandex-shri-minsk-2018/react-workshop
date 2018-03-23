@@ -3,6 +3,18 @@ import * as React from 'react';
 export function Demo() {
     return (
         <React.Fragment>
+            <div className="tags">
+                <div className="tags__scroll">
+                    <div className="tags__wrap">
+                        <button className="tag tag_color_1 tag_active">Каньоны</button>
+                        <button className="tag tag_color_2">Леса</button>
+                        <button className="tag tag_color_3">Пещеры</button>
+                        <button className="tag tag_color_4">Природа Европы</button>
+                        <button className="tag tag_color_5">Природа Азии</button>
+                    </div>
+                </div>
+            </div>
+
             <div className="cards">
 
                 <div className="card">

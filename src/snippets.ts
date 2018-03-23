@@ -1,4 +1,33 @@
+// const TAGS = [
+//     {title: 'Каньоны', slug: 'kanony'},
+//     {title: 'Леса', slug: 'les'},
+//     {title: 'Пещеры', slug: 'peschery'},
+//     {title: 'Природа Европы', slug: 'priroda-evropy'},
+//     {title: 'Природа Азии', slug: 'priroda-azii'}
+// ]
+
+// element.scrollIntoView({
+//     behavior: 'smooth'
+// });
+
 // let response = await fetch('/collections/api/cards/channels/gory/', {credentials: 'same-origin'});
+
+// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+
+
+// import {applyMiddleware, createStore, compose} from 'redux';
+//
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+//
+// let store = createStore(
+//     reducer,
+//     undefined,
+//     composeEnhancers(
+//         applyMiddleware(
+//             middleware
+//         )
+//     )
+// );
 
 // let params = Object.keys(query)
 //     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
